@@ -12,7 +12,7 @@ def test_string_to_constraints():
     assert isinstance(constr, ro.constraint.DoseConstraint)
     assert isinstance(constr, ro.constraint.MaxDoseConstraint)
     assert constr.dose == 20
-    print(constr.relop)
+    print constr.relop
     assert constr.relop is operator.le
 
     c = ro.constraint.D(25) > 30

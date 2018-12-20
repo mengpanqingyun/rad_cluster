@@ -22,7 +22,7 @@ def test_primal():
         voxel_weights = options.get('voxel_weights', dict())
         norm_options = options.get('norm_options', dict())
         ff = 0
-        for k, s in list(structures.items()):
+        for k, s in structures.items():
             wnorm = float(norm_options.get(k, dict()).get('weight_norm', 1))
             dnorm = float(norm_options.get(k, dict()).get('dose_norm', 1))
             vw = voxel_weights.get(k, 1)
@@ -43,9 +43,9 @@ def test_primal():
 
         fpgs = 0
         offset = 0
-        for k, s in list(structures.items()):
+        for k, s in structures.items():
             rng = slice(offset, offset + block_sizes[k])
-            a, b, c, d, e = [v[rng] for v in obj_voxels.arrays[1:-1]]
+            a, b, c, d, e = map(lambda v: v[rng], obj_voxels.arrays[1:-1])
             if isinstance(s, ro.structure.Target):
                 fpgs += np.dot(c, np.abs(y[k] - b))
                 fpgs += np.dot(d, y[k] - b)

@@ -248,11 +248,11 @@ class BeamClusteringTestCase(unittest.TestCase):
             mu = ro.dual.A_transpose_nu(prb.A_working, nu_t)
             mu_infeas = mu * (mu < -abs(cone_tol))
             n_infeas = sum(mu_infeas < 0)
-            print(('# INFEASIBLE: {}/{}'.format(n_infeas, mu.size)))
+            print('# INFEASIBLE: {}/{}'.format(n_infeas, mu.size))
 
             dim_clu = cluster_map.n_clusters
             dim_beams_sub = min(dim_clu, n_infeas)
-            print(('SUBPROBLEM BEAMS: {}'.format(dim_beams_sub)))
+            print('SUBPROBLEM BEAMS: {}'.format(dim_beams_sub))
             assert dim_beams_sub > 0, "require problem still infeasible"
 
             subprob = ro.planning.IntensityOptimizationProblem()
@@ -296,14 +296,14 @@ class BeamClusteringTestCase(unittest.TestCase):
             nu_t = prb.to_blocks(solution_running['voxel_duals'])
             p_LB = max(p_LB, -fconj(nu_t))
             in_domain, in_cone = feasible(nu_t, dual_tols)
-            print(('DUAL EPOCH: {}\t LOWER BOUND: {}\t UPPER BOUND: {}'.format(
-                    epoch, p_LB, p_UB)))
-            print(('in domain: {}'.format(in_domain)))
-            print(('in cone: {}'.format(in_cone)))
+            print('DUAL EPOCH: {}\t LOWER BOUND: {}\t UPPER BOUND: {}'.format(
+                    epoch, p_LB, p_UB))
+            print('in domain: {}'.format(in_domain))
+            print('in cone: {}'.format(in_cone))
 
         assert in_domain, 'nu_{} in domain'.format(epoch)
         infeas_after = n_infeas(solution_running['voxel_duals'])
-        print('infeas before, after:', infeas_before, infeas_after)
+        print 'infeas before, after:', infeas_before, infeas_after
         assert in_cone or (infeas_after < infeas_before)
         assert p_LB <= pstar and pstar <= p_UB, '{} <= {} <= {}'.format(p_LB, pstar, p_UB)
 

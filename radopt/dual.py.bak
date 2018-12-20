@@ -41,9 +41,9 @@ def build_objectives(shape, block_sizes, structures, dose_matrices, **options):
     assert isinstance(block_sizes, collections.Mapping), "block sizes given as dict"
     assert isinstance(structures, collections.Mapping), "structures given as dict"
     assert isinstance(dose_matrices, collections.Mapping), "dose matrices given as dict"
-    assert len(set(list(structures.keys()) + list(dose_matrices.keys()))) == len(structures), (
+    assert len(set(structures.keys() + dose_matrices.keys())) == len(structures), (
         "all keys shared between structures and dose matrices")
-    assert len(set(list(structures.keys()) + list(dose_matrices.keys()))) == len(structures), (
+    assert len(set(structures.keys() + dose_matrices.keys())) == len(structures), (
         "all keys shared between structures and dose matrices")
 
     norm_options = options.pop('norm_options', dict())
@@ -87,7 +87,7 @@ def build_objectives(shape, block_sizes, structures, dose_matrices, **options):
             nu = {blk_id: nu[blk_slices[blk_id]] for blk_id in structures}
         def eval_block(blk):
             return dual_evals[blk](nu[blk])
-        return sum(map(eval_block, list(nu.keys())))
+        return sum(map(eval_block, nu.keys()))
 
     def dual_feasible(nu, tol, verbose=True):
         try:
@@ -99,19 +99,19 @@ def build_objectives(shape, block_sizes, structures, dose_matrices, **options):
             nu = {blk_id: nu[blk_slices[blk_id]] for blk_id in structures}
 
         infeas_domain = list()
-        for k in list(structures.keys()):
+        for k in structures.keys():
             if not dual_constraints[k](nu[k], domain_tol):
                 infeas_domain.append(k)
         feas_domain = len(infeas_domain) == 0
         if not feas_domain and verbose:
             msg = 'Nu infeasible. nu \in dom(f^*) violated for structures {}'
-            print((msg.format(infeas_domain)))
+            print(msg.format(infeas_domain))
 
         mu = A_transpose_nu(dose_matrices, nu)
         feas_cone = all(mu + mu_offset >= -(cone_tol + 1e-8))
         if not feas_cone and verbose:
             msg = 'Mu infeasible. mu_min= {}. Required: mu >= {}'
-            print((msg.format(min(mu + mu_offset), -cone_tol)))
+            print(msg.format(min(mu + mu_offset), -cone_tol))
         return feas_domain, feas_cone
 
     return obj_voxels_dual, obj_beams_dual, dual_eval, dual_feasible

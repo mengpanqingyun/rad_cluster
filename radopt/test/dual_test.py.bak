@@ -27,7 +27,7 @@ def test_dual():
         norm_options = options.get('norm_options', dict())
         ff = 0
         ffeas = True
-        for k, s in list(structures.items()):
+        for k, s in structures.items():
             wnorm = float(norm_options.get(k, dict()).get('weight_norm', 1))
             dnorm = float(norm_options.get(k, dict()).get('dose_norm', 1))
             nu0 = nu_offset.get(k, 0)
@@ -63,10 +63,10 @@ def test_dual():
         fpgs = 0
         feas_pgs = True
         offset = 0
-        for k, s in list(structures.items()):
+        for k, s in structures.items():
             nu0 = nu_offset.get(k, 0)
             rng = slice(offset, offset + block_sizes[k])
-            a, b, c, d, e = [v[rng] for v in obj_voxels.arrays[1:-1]]
+            a, b, c, d, e = map(lambda v: v[rng], obj_voxels.arrays[1:-1])
             if isinstance(s, ro.structure.Target):
                 fpgs += np.dot(d, nu[k] + nu0)
                 feas_pgs &= np.all(a * nu[k] - b > -FEAS_TOL)

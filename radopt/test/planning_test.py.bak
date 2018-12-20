@@ -48,12 +48,12 @@ def test_intensity_optimization_problem():
     # scaling does not change optimal objective value
     assert all(abs(np.array(objvals) - objvals[0]) < 5e-2 * (1 + objvals[0]))
 
-    iters = collections.OrderedDict(sorted(list(iters.items()), key=lambda t: t[1], reverse=True))
-    print("weight normalized? | dose normalized ? | iters ")
-    print("-------------------|-------------------|-------")
+    iters = collections.OrderedDict(sorted(iters.items(), key=lambda t: t[1], reverse=True))
+    print "weight normalized? | dose normalized ? | iters "
+    print "-------------------|-------------------|-------"
     for nw, nd in iters:
-        print("{!r:^19}|{!r:^19}|{:^7}".format(nw, nd, iters[(nw, nd)]))
-    print("\n(1 run each condition)")
+        print "{!r:^19}|{!r:^19}|{:^7}".format(nw, nd, iters[(nw, nd)])
+    print "\n(1 run each condition)"
 
     # dose normalization is always good
     assert iters[(False, True)] < iters[(False, False)]
@@ -73,10 +73,10 @@ def test_intensity_optimization_problem():
             key = 'dose_and_wt' if nw else 'dose_only'
             iters[key] += solver.info.iterations / float(runs)
 
-    print("\n\nnormalization policy? | iters ")
-    print("----------------------|-------")
+    print "\n\nnormalization policy? | iters "
+    print "----------------------|-------"
     for policy in iters:
-        print("{:^22}|{:^7.0f}".format(policy, iters[policy]))
-    print("\n(average of {} runs)".format(runs))
+        print "{:^22}|{:^7.0f}".format(policy, iters[policy])
+    print "\n(average of {} runs)".format(runs)
 
     assert iters['dose_only'] < iters['dose_and_wt']

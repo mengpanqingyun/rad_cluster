@@ -1,6 +1,6 @@
 """ TODO: docstring
 """
-
+from __future__ import print_function
 import numpy as np
 import optkit as ok
 
@@ -49,7 +49,7 @@ class VoxelClusteredProblem(ClusteredProblem):
         assert set(self.cluster_maps.keys()) == s_keys
         assert all(
                 isinstance(m, clustering.DiscreteMap)
-                for m in list(self.cluster_maps.values()))
+                for m in self.cluster_maps.values())
 
         self._full_problem.A.update(self.A_full)
         self._full_problem.structures.update(self.structures)
@@ -298,7 +298,7 @@ class CompressionAnalysis(object):
         def calc_stats(tag, series, **stats):
             try:
                 output = dict()
-                for name, stat in list(stats.items()):
+                for name, stat in stats.items():
                     output[name + "_" + tag] = stat(series)
                 return output
             except:

@@ -49,6 +49,6 @@ def build_objectives(shape, block_sizes, structures, dose_matrices, **options):
     def primal_eval(x):
         def eval_block(blk):
             return primal_evals[blk](np.dot(dose_matrices[blk], x))
-        return sum(map(eval_block, list(structures.keys())))
+        return sum(map(eval_block, structures.keys()))
 
     return obj_voxels, obj_beams, primal_eval

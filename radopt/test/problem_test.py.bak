@@ -29,9 +29,9 @@ def test_problem():
 
     # test key order
     prb.set_key_order(key_order=[2, 1, 0])
-    assert list(prb.structures.keys()) == [2, 1, 0]
+    assert prb.structures.keys() == [2, 1, 0]
     prb.set_key_order(key_order=['target', 'target2', 'oar'])
-    assert list(prb.structures.keys()) == [0, 1, 2]
+    assert prb.structures.keys() == [0, 1, 2]
 
     # test joint normalization
     # default behavior: for each structure S, normalize weights by |S|/|S_key|
@@ -96,7 +96,7 @@ def test_problem():
     rowdim, block_sizes = prb.calc_row_dim(dose_matrices)
     y_vec = np.random.random(rowdim)
     y = prb.contig_to_blocks(y_vec, block_sizes)
-    assert list(y.keys()) == list(prb.structures.keys())
+    assert y.keys() == prb.structures.keys()
     assert all(y[k].shape[0] == block_sizes[k] for k in structures)
     y_vec_prime = prb.blocks_to_contig(y)
     assert np.sum(y_vec - y_vec_prime) == 0
@@ -104,7 +104,7 @@ def test_problem():
     # build matrix
     A, wrk = prb.build_matrix(dose_matrices)
     assert A.shape == (rowdim, beams)
-    assert list(wrk.keys()) == list(dose_matrices.keys())
+    assert wrk.keys() == dose_matrices.keys()
 
     # build primal objectives
     ff, gg, _ = prb.build_primal_objectives(dose_matrices)

@@ -67,7 +67,7 @@ class Problem(object):
         def largest_target():
             key = None
             size = 0
-            for k, s in list(self.structures.items()):
+            for k, s in self.structures.items():
                 if isinstance(s, radopt.structure.Target) and s.size > size:
                     size = s.size
                     key = k
@@ -97,10 +97,10 @@ class Problem(object):
         return m, block_sizes
 
     def calc_col_dim(self, dose_matrices):
-        assert len(set(A.shape[1] for A in list(dose_matrices.values()))) == 1, (
+        assert len(set(A.shape[1] for A in dose_matrices.values())) == 1, (
                 "Structure dose matrices have consistent # columns")
 
-        return list(dose_matrices.values())[0].shape[1]
+        return dose_matrices.values()[0].shape[1]
 
     def set_key_order(self, key_order=None, **options):
         if key_order is not None:

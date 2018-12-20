@@ -1,6 +1,6 @@
 """ TODO: docstring
 """
-
+from __future__ import print_function
 import functools
 import numpy as np
 import radopt.primal
